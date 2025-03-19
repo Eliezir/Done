@@ -8,7 +8,7 @@ export const Route = createRootRoute({
 
 		// TODO: Replace with actual checks for first login and authentication
 
-		const isFirstLogin = false;
+		const isFirstLogin = true;
 		const isLoggedIn = true;
 
 		if (isFirstLogin) {

@@ -8,12 +8,12 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as OnboardingRouteImport } from './routes/onboarding/route'
+import { Route as AuthRouteImport } from './routes/auth/route'
+import { Route as AppRouteImport } from './routes/app/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as AppIndexImport } from './routes/app/index'
 import { Route as OnboardingWelcomeImport } from './routes/onboarding/welcome'
@@ -21,31 +21,24 @@ import { Route as OnboardingPreferencesImport } from './routes/onboarding/prefer
 import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordImport } from './routes/auth/forgot-password'
-import { Route as AuthlayoutImport } from './routes/auth/__layout'
-import { Route as ApplayoutImport } from './routes/app/__layout'
-
-// Create Virtual Routes
-
-const AuthImport = createFileRoute('/auth')()
-const AppImport = createFileRoute('/app')()
 
 // Create/Update Routes
 
-const AuthRoute = AuthImport.update({
+const OnboardingRouteRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRouteRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppRoute = AppImport.update({
+const AppRouteRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const OnboardingRouteRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -58,7 +51,7 @@ const IndexRoute = IndexImport.update({
 const AppIndexRoute = AppIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AppRouteRoute,
 } as any)
 
 const OnboardingWelcomeRoute = OnboardingWelcomeImport.update({
@@ -76,29 +69,19 @@ const OnboardingPreferencesRoute = OnboardingPreferencesImport.update({
 const AuthRegisterRoute = AuthRegisterImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 
 const AuthLoginRoute = AuthLoginImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 
 const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
-  getParentRoute: () => AuthRoute,
-} as any)
-
-const AuthlayoutRoute = AuthlayoutImport.update({
-  id: '/__layout',
-  getParentRoute: () => AuthRoute,
-} as any)
-
-const ApplayoutRoute = ApplayoutImport.update({
-  id: '/__layout',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -112,6 +95,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
@@ -119,54 +116,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRoute
     }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/__layout': {
-      id: '/app/__layout'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof ApplayoutImport
-      parentRoute: typeof AppRoute
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/__layout': {
-      id: '/auth/__layout'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthlayoutImport
-      parentRoute: typeof AuthRoute
-    }
     '/auth/forgot-password': {
       id: '/auth/forgot-password'
       path: '/forgot-password'
       fullPath: '/auth/forgot-password'
       preLoaderRoute: typeof AuthForgotPasswordImport
-      parentRoute: typeof AuthImport
+      parentRoute: typeof AuthRouteImport
     }
     '/auth/login': {
       id: '/auth/login'
       path: '/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginImport
-      parentRoute: typeof AuthImport
+      parentRoute: typeof AuthRouteImport
     }
     '/auth/register': {
       id: '/auth/register'
       path: '/register'
       fullPath: '/auth/register'
       preLoaderRoute: typeof AuthRegisterImport
-      parentRoute: typeof AuthImport
+      parentRoute: typeof AuthRouteImport
     }
     '/onboarding/preferences': {
       id: '/onboarding/preferences'
@@ -187,12 +156,40 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexImport
-      parentRoute: typeof AppImport
+      parentRoute: typeof AppRouteImport
     }
   }
 }
 
 // Create and export the route tree
+
+interface AppRouteRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
+interface AuthRouteRouteChildren {
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
 
 interface OnboardingRouteRouteChildren {
   OnboardingPreferencesRoute: typeof OnboardingPreferencesRoute
@@ -208,39 +205,11 @@ const OnboardingRouteRouteWithChildren = OnboardingRouteRoute._addFileChildren(
   OnboardingRouteRouteChildren,
 )
 
-interface AppRouteChildren {
-  ApplayoutRoute: typeof ApplayoutRoute
-  AppIndexRoute: typeof AppIndexRoute
-}
-
-const AppRouteChildren: AppRouteChildren = {
-  ApplayoutRoute: ApplayoutRoute,
-  AppIndexRoute: AppIndexRoute,
-}
-
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
-
-interface AuthRouteChildren {
-  AuthlayoutRoute: typeof AuthlayoutRoute
-  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
-}
-
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthlayoutRoute: AuthlayoutRoute,
-  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
-  AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
-}
-
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
+  '/auth': typeof AuthRouteRouteWithChildren
   '/onboarding': typeof OnboardingRouteRouteWithChildren
-  '/app': typeof ApplayoutRoute
-  '/auth': typeof AuthlayoutRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -251,24 +220,22 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
   '/onboarding': typeof OnboardingRouteRouteWithChildren
-  '/app': typeof AppIndexRoute
-  '/auth': typeof AuthlayoutRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/onboarding/preferences': typeof OnboardingPreferencesRoute
   '/onboarding/welcome': typeof OnboardingWelcomeRoute
+  '/app': typeof AppIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
+  '/auth': typeof AuthRouteRouteWithChildren
   '/onboarding': typeof OnboardingRouteRouteWithChildren
-  '/app': typeof AppRouteWithChildren
-  '/app/__layout': typeof ApplayoutRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/auth/__layout': typeof AuthlayoutRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -281,9 +248,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/onboarding'
     | '/app'
     | '/auth'
+    | '/onboarding'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -293,22 +260,20 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/onboarding'
-    | '/app'
     | '/auth'
+    | '/onboarding'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/onboarding/preferences'
     | '/onboarding/welcome'
+    | '/app'
   id:
     | '__root__'
     | '/'
-    | '/onboarding'
     | '/app'
-    | '/app/__layout'
     | '/auth'
-    | '/auth/__layout'
+    | '/onboarding'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -320,16 +285,16 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   OnboardingRouteRoute: typeof OnboardingRouteRouteWithChildren
-  AppRoute: typeof AppRouteWithChildren
-  AuthRoute: typeof AuthRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   OnboardingRouteRoute: OnboardingRouteRouteWithChildren,
-  AppRoute: AppRouteWithChildren,
-  AuthRoute: AuthRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -343,13 +308,27 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/onboarding",
         "/app",
-        "/auth"
+        "/auth",
+        "/onboarding"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/app": {
+      "filePath": "app/route.tsx",
+      "children": [
+        "/app/"
+      ]
+    },
+    "/auth": {
+      "filePath": "auth/route.tsx",
+      "children": [
+        "/auth/forgot-password",
+        "/auth/login",
+        "/auth/register"
+      ]
     },
     "/onboarding": {
       "filePath": "onboarding/route.tsx",
@@ -357,30 +336,6 @@ export const routeTree = rootRoute
         "/onboarding/preferences",
         "/onboarding/welcome"
       ]
-    },
-    "/app": {
-      "filePath": "app",
-      "children": [
-        "/app/__layout",
-        "/app/"
-      ]
-    },
-    "/app/__layout": {
-      "filePath": "app/__layout.tsx",
-      "parent": "/app"
-    },
-    "/auth": {
-      "filePath": "auth",
-      "children": [
-        "/auth/__layout",
-        "/auth/forgot-password",
-        "/auth/login",
-        "/auth/register"
-      ]
-    },
-    "/auth/__layout": {
-      "filePath": "auth/__layout.tsx",
-      "parent": "/auth"
     },
     "/auth/forgot-password": {
       "filePath": "auth/forgot-password.tsx",
