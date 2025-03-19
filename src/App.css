@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 :root {
   --background: hsla(0, 0%, 100%, 0.749);
+  --background: hsl(60, 21%, 93%);
   /* --background: hsl(0 0% 100%); */
   --foreground: hsl(240 10% 3.9%);
   --card: hsl(0 0% 100%);
@@ -42,8 +43,9 @@
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 .dark {
-  --background: hsla(203, 27%, 6%, 0.749);
+  /* --background: hsla(203, 27%, 6%, 0.749); */
   /* --background: hsl(240 10% 3.9%); */
+  --background: hsl(60, 21%, 93%);
   --foreground: hsl(0 0% 98%);
   --card: hsl(240 10% 3.9%);
   --card-foreground: hsl(0 0% 98%);

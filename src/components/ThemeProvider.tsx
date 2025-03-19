@@ -15,7 +15,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         // Set the theme class on root element
         const root = document.documentElement;
         root.classList.remove('light', 'dark');
-        root.classList.add(theme);
+        root.classList.add('light');
         
         // Convert accent color to HSL for the primary color
         const rgba = accent_color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/);

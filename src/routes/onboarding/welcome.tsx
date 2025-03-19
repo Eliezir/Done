@@ -1,12 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Icon } from '@iconify/react';
+import { createFileRoute } from '@tanstack/react-router'
 
-interface WelcomeScreenProps {
-	onComplete: () => void;
-}
 
-export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
+
+
+export const Route = createFileRoute('/onboarding/welcome')({
+  component: WelcomePage
+})
+
+
+
+export function WelcomePage() {
 	const [animationState, setAnimationState] = useState<
 		"initial" | "text-visible" | "complete"
 	>("initial");
@@ -22,6 +28,9 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
 	const typingSpeed = useRef<number>(50);
 	const initialTypingComplete = useRef<boolean>(false);
 
+
+	const navigate = Route.useNavigate()
+
 	useEffect(() => {
 		const textTimer = setTimeout(() => {
 			setAnimationState("text-visible");
@@ -29,6 +38,10 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
 
 		return () => clearTimeout(textTimer);
 	}, []);
+
+	const onComplete = () => {
+		navigate({ to: '/onboarding/preferences' })
+	  }
 
 	useEffect(() => {
 		if (animationState !== "text-visible") return;
@@ -96,7 +109,7 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
 	}, [animationState]);
 
 	return (
-		<div className="fixed inset-0 flex flex-col items-center justify-center noise-bg z-50 w-full h-screen">
+		<div className="fixed inset-0 flex flex-col items-center justify-center z-50 w-full h-screen">
 			<div className="text-center max-w-5xl px-4 relative z-10 flex flex-col items-center justify-center">
 				<div className="mb-12 space-y-1 text-center">
 					<h1
