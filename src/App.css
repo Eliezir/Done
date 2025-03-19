@@ -4,7 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 :root {
-  --background: hsla(0, 0%, 100%, 0.749);
   --background: hsl(60, 21%, 93%);
   /* --background: hsl(0 0% 100%); */
   --foreground: hsl(240 10% 3.9%);
@@ -31,7 +30,6 @@
   --chart-4: hsl(43 74% 66%);
   --chart-5: hsl(27 87% 67%);
   --radius: 0.6rem;
-  --welcome-bg: hsl(60, 21%, 93%);
   --welcome-text: hsl(210, 10%, 23%);
   --sidebar: hsl(0 0% 98%);
   --sidebar-foreground: hsl(240 5.3% 26.1%);
@@ -69,7 +67,6 @@
   --chart-3: hsl(30 80% 55%);
   --chart-4: hsl(280 65% 60%);
   --chart-5: hsl(340 75% 55%);
-  --welcome-bg: hsl(60, 21%, 93%);
   --welcome-text: hsl(210, 10%, 23%);
   --sidebar: hsl(240 5.9% 10%);
   --sidebar-foreground: hsl(240 4.8% 95.9%);
@@ -149,7 +146,7 @@
 /* Noise background */
 .noise-bg {
   position: relative;
-  background-color: var(--welcome-bg);
+  background-color: var(--background);
 }
 
 .noise-bg::before {
