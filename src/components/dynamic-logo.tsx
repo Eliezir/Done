@@ -8,7 +8,7 @@ export function DynamicLogo() {
 					className="absolute top-[2px] left-[2px] min-w-[38px] min-h-[38px] "
 				/>
 			</div>
-			<span className="text-neutral-800 atma-font font-bold text-3xl">
+			<span className="text-primary atma-font font-bold text-3xl">
 				Done.
 			</span>
 		</div>

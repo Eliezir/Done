@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
   SidebarTrigger,
+  SidebarInput
 } from "@/components/ui/sidebar"
 
 // Menu items.
@@ -57,6 +58,7 @@ export function AppSidebar() {
           <SidebarSeparator className="mx-0" />  
         </SidebarHeader>
         <SidebarGroup>
+        {/* <SidebarInput /> */}
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
